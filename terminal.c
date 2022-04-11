@@ -3422,6 +3422,13 @@ static void term_out(Terminal *term)
                 struct beeptime *newbeep;
                 unsigned long ticks;
 
+                if (term->termstate == SEEN_OSC) {
+                  term->osc_strlen = 0;
+                  do_osc(term);
+                  term->termstate = TOPLEVEL;
+                  break;
+                }
+
                 ticks = GETTICKCOUNT();
 
                 if (!term->beep_overloaded) {
